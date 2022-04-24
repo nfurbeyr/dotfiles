@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# startlocal
+#
+# starts guardian, keystore and blockchain
+# 
+
+ReSource="/Users/nathanielfurbeyre/Documents/GitHub/ReSource"
+hardhat="${ReSource}/ReSource-Protocol/packages/hardhat" 
+guardian="${ReSource}/guardian" 
+keystore="${ReSource}/keystore" 
+api="${ReSource}/resource-api" 
+
+cd $guardian && yarn start &
+cd $keystore && yarn start &
+
+cd $hardhat && yarn chain &
+sleep 5
+cd $hardhat && yarn hardhat fundedwallet --amount 100 --address 0xe105FB303e5fFEe9e27726267E2dB11C37260865
+cd $hardhat && yarn deploy 
+
+dump && cd $api && yarn db:reset:seed &
+cd $api && yarn fetch-env local
+cd $api && yarn generate
+cd $api && yarn build

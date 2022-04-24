@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# startlocal
+#
+# starts guardian, keystore and blockchain
+# 
+
+startlocal
+
+ReSource="/Users/nathanielfurbeyre/Documents/GitHub/ReSource"
+marketplace="${ReSource}/client-react" 
+api="${ReSource}/resource-api" 
+
+cd $api && yarn start
+
+cd $marketplace && yarn fetch-env local
+cd $marketplace && yarn start

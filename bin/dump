@@ -1,0 +1,31 @@
+#!/bin/sh
+#
+# dump
+#
+# dump dumps local dev env for ReSource db's and seeds api db
+# 
+
+
+psql "postgres://root:root@localhost:5432/dev" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+
+echo "dumped api"
+
+psql "postgres://root:root@localhost:5432/keystore" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+
+echo "dumped keystore"
+
+psql "postgres://root:root@localhost:5432/guardian" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+
+echo "dumped guardian"
+
+cd ~/Documents/GitHub/ReSource/keystore && yarn db:migrate:prod
+
+echo "migrated keystore"
+
+cd ~/Documents/GitHub/ReSource/guardian && yarn db:migrate:prod
+
+echo "migrated guardian"
+
+cd ~/Documents/GitHub/ReSource/resource-api && yarn db:migrate:prod
+
+echo "migrate api"

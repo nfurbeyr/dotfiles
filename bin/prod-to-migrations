@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# prod-to-migrations
+#
+# copies prod data into local "migrations" database for ease of testing
+# 
+
+pg_dump -O -x -h prod-db.resourcenetwork.co -U resource prod > resource-prod.sql
+psql -U root -d migrations -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+cat resource-prod.sql | psql -U root -d migrations

@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+# dump-dev
+#
+# dump dumps shared dev env for ReSource db's and seeds api db
+# 
+
+ssh -i "~/.aws/cert/default-resource-api.pem" ubuntu@3.19.58.195 << EOF
+  sudo docker exec resource-api yarn docker:db:seed
+  sudo docker restart resource-api 
+EOF
+
+echo "seeded api"
+
+ssh -i "~/.aws/cert/default-resource-api.pem" ubuntu@18.191.115.200 << EOF
+  sudo docker exec guardian-api yarn prisma migrate reset --force
+  sudo docker restart guardian-api 
+EOF
+
+echo "reset guardian"
+
+ssh -i "~/.aws/cert/default-resource-api.pem" ubuntu@18.118.47.165 << EOF
+  sudo docker exec keystore-api yarn prisma migrate reset --force
+  sudo docker restart keystore-api 
+EOF
+
+echo "reset keystore"
