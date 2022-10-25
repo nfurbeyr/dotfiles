@@ -66,7 +66,23 @@ zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
 
+# GITHUB
+
+export GITHUB_TOKEN=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
+
 #### FIG ENV VARIABLES ####
 # Please make sure this block is at the end of this file.
 [ -s ~/.fig/fig.sh ] && source ~/.fig/fig.sh
 #### END FIG ENV VARIABLES ####
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /opt/homebrew/bin/terraform terraform
+
+# This imports the Access/Secret keys from your profile and injects
+# them into your local shell.  This means you can login once every 12
+# hours, and then run 'aws-mfa-export' in new shells to access the same
+# credentials.  Use like "aws-mfa-profie mfa" to load keys from the mfa
+# profile.  If you dont provide a profile, it defaults to "mfa"
+export AWS_ACCESS_KEY_ID="$(aws configure get aws_access_key_id)"
+export AWS_SECRET_ACCESS_KEY="$(aws configure get aws_secret_access_key)"
+export AWS_SESSION_TOKEN="$(aws configure get aws_session_token)"
